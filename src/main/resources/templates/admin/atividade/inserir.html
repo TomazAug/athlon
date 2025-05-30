@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <div th:replace="admin/fragments/heads :: heads"></div>
+  <title>Cadastro de Atividades</title>
+  <script>
+    // Função para atualizar os campos de distância e unidade de medida
+    function atualizarCampos() {
+      var modalidade = document.getElementById("modalidade").value;
+      var distancia = document.getElementById("distancia");
+      var unidadeMedida = document.getElementById("unidadeMedida");
+
+      if (modalidade === "MUSCULACAO") {
+        distancia.disabled = true;
+        unidadeMedida.disabled = true;
+      } else {
+        distancia.disabled = false;
+        unidadeMedida.disabled = false;
+      }
+    }
+
+    // Função para setar a data e hora atuais no campo de data
+    function setDataHoraAtual() {
+      var dataHora = new Date();
+      var dataFormatada = dataHora.toISOString().slice(0, 16); // Formato yyyy-MM-ddTHH:mm
+      document.getElementById("dataHora").value = dataFormatada;
+    }
+
+    window.onload = function() {
+      setDataHoraAtual();  // Configura a data atual ao carregar a página
+      atualizarCampos();  // Verifica se a modalidade é musculação ao carregar
+    }
+  </script>
+</head>
+<body>
+
+<div class="container">
+  <div th:replace="admin/fragments/header :: cabecalho"></div>
+
+  <div class="row">
+    <div class="col">
+      <h2>Cadastro de <b>Atividades</b></h2>
+
+      <form th:object="${atividade}" th:action="@{/atividade/salvar}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <div class="card">
+          <div class="card-header">
+            Dados da Atividade
+          </div>
+          <div class="card_body">
+            <div class="container">
+
+              <!-- Modalidade -->
+              <div class="row mb-3">
+                <label class="col-form-label">Modalidade:</label>
+                <div>
+                  <select class="form-control" id="modalidade" th:field="*{modalidade}" onchange="atualizarCampos()">
+                    <option value="CORRIDA">Corrida</option>
+                    <option value="NATACAO">Natação</option>
+                    <option value="BIKE">Bike</option>
+                    <option value="MUSCULACAO">Musculação</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Distância -->
+              <div class="row mb-3">
+                <label class="col-form-label">Distância (em km):</label>
+                <div>
+                  <input class="form-control" type="number" step="0.1" id="distancia" th:field="*{distancia}" />
+                </div>
+              </div>
+
+              <!-- Unidade de Medida -->
+              <div class="row mb-3">
+                <label class="col-form-label">Unidade de Medida:</label>
+                <div>
+                  <select class="form-control" id="unidadeMedida" th:field="*{unidadeMedida}">
+                    <option value="KM">KM</option>
+                    <option value="M">M</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Tempo Total -->
+              <div class="row mb-3">
+                <label class="col-form-label">Tempo Total (minutos):</label>
+                <div>
+                  <input class="form-control" type="number" th:field="*{tempoTotal}" />
+                </div>
+              </div>
+
+              <!-- Percepção de Esforço -->
+              <div class="row mb-3">
+                <label class="col-form-label">Percepção de Esforço (escala de 0-10):</label>
+                <div>
+                  <input class="form-control" type="number" step="1" min="0" max="10" th:field="*{percepcaoEsforco}" />
+                </div>
+              </div>
+
+              <!-- Tipo de Treino -->
+              <div class="row mb-3">
+                <label class="col-form-label">Tipo de Treino:</label>
+                <div>
+                  <input class="form-control" type="text" th:field="*{tipoTreino}" />
+                </div>
+              </div>
+
+              <!-- Notas -->
+              <div class="row mb-3">
+                <label class="col-form-label">Notas:</label>
+                <div>
+                  <textarea class="form-control" th:field="*{notas}"></textarea>
+                </div>
+              </div>
+
+              <!-- Data e Hora -->
+              <div class="row mb-3">
+                <label class="col-form-label">Data e Hora:</label>
+                <div>
+                  <input class="form-control" type="datetime-local" id="dataHora" th:field="*{dataHora}" />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-success mt-3" type="submit">Salvar <i class="fas fa-save"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <div th:replace="admin/fragments/footer :: footer"></div>
+</div>
+
+</body>
+</html>
