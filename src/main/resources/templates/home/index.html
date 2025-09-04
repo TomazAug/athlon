@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: head}"></head>
+
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+<div class="site-wrap">
+
+    <div th:replace="~{fragments/sidenav :: sidenav}"></div>
+
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <a id="bgndVideo" class="player"
+       data-property="{videoURL:'https://www.youtube.com/watch?v=w-cRWOjlk8c',showYTLogo:false, showAnnotations: false, showControls: false, cc_load_policy: false, containment:'#home-section',autoPlay:true, mute:true, startAt:255, stopAt: 271, opacity:1}">
+    </a>
+
+    <div th:replace="~{fragments/intro :: intro}"></div>
+
+    <div th:replace="~{fragments/schedule :: schedule}"></div>
+
+    <div th:replace="~{fragments/missao :: missao}"></div>
+
+    <img th:src="@{/assets/images/missao_athlon.png}" alt="Missão Athlon" style="width: 100%; height: auto; display: block;">
+
+    <div th:replace="~{fragments/sobrenos :: sobrenos}"></div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</div>
+
+<div th:replace="~{fragments/scripts :: scripts}"></div>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<header th:fragment="cabecalho" class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a href="http://localhost" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <img th:src="@{/assets/images/logo.png}" alt="Logo" height="20" />
+        <!--        <span class="fs-4" style="margin-left: 5px;">ATHLON</span>-->
+    </a>
+
+    <ul class="nav nav-pills">
+        <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a th:href="@{/atleta/form-inserir}" class="nav-link">Cadastrar Atletas</a></li>
+        <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a th:href="@{/atleta}" class="nav-link">Listagem de Atletas</a></li>
+        <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"><a th:href="@{/atividade/form-inserir}" class="nav-link">Cadastrar Atividade</a></li>
+        <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"><a th:href="@{/atividade}" class="nav-link">Listagem de Atividades</a></li>
+    </ul>
+</header>
+</body>
+</html>

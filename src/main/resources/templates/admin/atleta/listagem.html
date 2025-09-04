@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="admin/fragments/heads :: heads"></div>
+    <title>Listagem de Atletas</title>
+</head>
+<body>
+<div class="container">
+    <div th:replace="admin/fragments/header :: cabecalho"></div>
+
+    <div class="row">
+        <div class="alert alert-success alert-dismissible fade show" th:if="${mensagem}">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <span th:text="${mensagem}"></span>
+        </div>
+
+        <div class="col">
+            <h2>Listagem de <b>Atletas</b></h2>
+
+            <div class="row mb-3">
+                <!-- Campo de busca -->
+                <div class="col-sm-6">
+                    <form th:action="@{/atleta/buscar}" method="post">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="nome" placeholder="Buscar por nome"/>
+                            <button class="btn btn-primary" type="submit">
+                                Buscar <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Botão Cadastrar -->
+                <div class="col-sm-6 text-end">
+                    <a th:href="@{/atleta/form-inserir}" class="btn btn-success">
+                        Cadastrar <i class="fa-solid fa-floppy-disk"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tabela de atletas -->
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Altura</th>
+                    <th>Peso</th>
+                    <th>Sexo</th>
+                    <th>Data de Nascimento</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${atletas.empty}">
+                    <td colspan="7">Nenhum registro encontrado</td>
+                </tr>
+                <tr th:each="atleta : ${atletas}">
+                    <td th:text="${atleta.id}">Id</td>
+                    <td th:text="${atleta.nome}">Nome</td>
+                    <td th:text="${atleta.altura}">Altura</td>
+                    <td th:text="${atleta.peso}">Peso</td>
+                    <td th:text="${atleta.sexo}">Sexo</td>
+                    <td th:text="${#temporals.format(atleta.dataNascimento, 'dd/MM/yyyy')}">Data Nascimento</td>
+                    <td>
+                        <a class="btn btn-outline-danger btn-sm"
+                           th:href="@{/atleta/excluir/{id}(id=${atleta.id})}"
+                           th:data-confirm-delete="|Você gostaria de apagar ${atleta.nome}?|"
+                           onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                            Apagar <i class="fa-solid fa-trash"></i>
+                        </a>
+                        <a class="btn btn-outline-primary btn-sm"
+                           th:href="@{/atleta/alterar/{id}(id=${atleta.id})}">
+                            Editar <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="admin/fragments/footer :: footer"></div>
+</div>
+</body>
+</html>

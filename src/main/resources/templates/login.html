@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="admin/fragments/heads :: heads"></div>
+    <title>Login</title>
+    <style>
+        .mensagem {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div th:replace="admin/fragments/header :: header"></div>
+
+    <br><br><br>
+
+    <div class="row">
+        <div class="col">
+            <!-- Exibir mensagem de erro se houver -->
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${param.error}">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                Usuário ou senha inválidos.
+            </div>
+
+            <!-- Exibir mensagem de logout -->
+            <div class="alert alert-success alert-dismissible fade show" th:if="${param.logout}">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                Logout realizado com sucesso.
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-6">
+                    <h2>Entrar no <b>Athlon</b></h2>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a th:href="@{/atleta/form-inserir}" class="btn btn-primary">
+                        Cadastrar-se <i class="fas fa-user-plus"></i>
+                    </a>
+                </div>
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="card">
+                    <div class="card-header">
+                        Dados de Acesso
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+
+                            <div class="row mb-3">
+                                <label class="col-form-label">Usuário:</label>
+                                <div>
+                                    <input class="form-control" type="text" name="username" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-form-label">Senha:</label>
+                                <div>
+                                    <input class="form-control" type="password" name="password" required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-success mt-3" type="submit">
+                    Entrar <i class="fas fa-sign-in-alt"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div th:replace="admin/fragments/footer :: footer"></div>
+</div>
+</body>
+</html>

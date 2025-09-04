@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<footer th:fragment="footer" class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <p class="col-md-4 mb-0 text-muted">©2025 Athlon</p>
+
+    <a href="http://localhost" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        <img th:src="@{/assets/images/logo.png}" alt="Logo" width="150" />
+    </a>
+
+    <ul class="nav col-md-4 justify-content-end">
+            <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a th:href="@{/atleta/form-inserir}" class="nav-link">Cadastrar Atletas</a></li>
+            <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a th:href="@{/atleta}" class="nav-link">Listagem de Atletas</a></li>
+            <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"><a th:href="@{/atividade/form-inserir}" class="nav-link">Cadastrar Atividade</a></li>
+            <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"><a th:href="@{/atividade}" class="nav-link">Listagem de Atividades</a></li>
+    </ul>
+
+    <div sec:authorize="isAuthenticated()">
+        <p>Usuário: <span sec:authentication="principal.username"></span></p>
+        <p>Roles: <span sec:authentication="principal.authorities"></span></p>
+    </div>
+
+</footer>
+</body>
+</html>

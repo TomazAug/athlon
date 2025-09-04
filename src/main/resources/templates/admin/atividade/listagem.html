@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="admin/fragments/heads :: heads"></div>
+    <title>Listagem de Atividades</title>
+</head>
+<body>
+<div class="container">
+    <div th:replace="admin/fragments/header :: cabecalho"></div>
+
+    <div class="row">
+        <div class="alert alert-success alert-dismissible fade show" th:if="${mensagem}">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <span th:text="${mensagem}"></span>
+        </div>
+
+        <div class="col">
+            <h2>Listagem de <b>Atividades</b></h2>
+
+            <div class="row mb-3">
+                <!-- Campo de busca -->
+                <div class="col-sm-6">
+                    <form th:action="@{/atividade/buscar}" method="post">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="modalidade" placeholder="Buscar por modalidade"/>
+                            <button class="btn btn-primary" type="submit">
+                                Buscar <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Botão Cadastrar -->
+                <div class="col-sm-6 text-end">
+                    <a th:href="@{/atividade/form-inserir}" class="btn btn-success">
+                        Cadastrar <i class="fa-solid fa-floppy-disk"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tabela de atividades -->
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Modalidade</th>
+                    <th th:if="${not #lists.isEmpty(atividades)}">Distância</th> <!-- Condicional para Distância -->
+                    <th>Unidade</th>
+                    <th>Tempo Total</th>
+                    <th>Percepção de Esforço</th>
+                    <th>Tipo de Treino</th>
+                    <th>Notas</th>
+                    <th>Data e Hora</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${atividades.empty}">
+                    <td colspan="10">Nenhum registro encontrado</td>
+                </tr>
+                <tr th:each="atividade : ${atividades}">
+                    <td th:text="${atividade.id}">Id</td>
+                    <td th:text="${atividade.modalidade}">Modalidade</td>
+
+                    <!-- Exibindo a Distância apenas quando não for musculação -->
+                    <td th:if="${atividade.modalidade != 'MUSCULACAO'}" th:text="${atividade.distancia}">Distância</td>
+                    <td th:if="${atividade.modalidade == 'MUSCULACAO'}">Não aplicável</td> <!-- Exibe algo caso a modalidade seja musculação -->
+
+                    <td th:text="${atividade.unidadeMedida}">Unidade</td>
+                    <td th:text="${atividade.tempoTotal}">Tempo Total</td>
+                    <td th:text="${atividade.percepcaoEsforco}">Percepção de Esforço</td>
+                    <td th:text="${atividade.tipoTreino}">Tipo de Treino</td>
+                    <td th:text="${atividade.notas}">Notas</td>
+                    <td th:text="${#temporals.format(atividade.dataHora, 'dd/MM/yyyy HH:mm')}">Data e Hora</td>
+                    <td>
+                        <a class="btn btn-outline-danger btn-sm"
+                           th:href="@{/atividade/excluir/{id}(id=${atividade.id})}"
+                           th:data-confirm-delete="|Você gostaria de apagar esta atividade?|"
+                           onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                            Apagar <i class="fa-solid fa-trash"></i>
+                        </a>
+                        <a class="btn btn-outline-primary btn-sm"
+                           th:href="@{/atividade/alterar/{id}(id=${atividade.id})}">
+                            Editar <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="admin/fragments/footer :: footer"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<footer th:fragment="footer" id="faleconosco-section" class="footer-section" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h3 class="text-dark">Sobre o Athlon</h3>
+        <p>De atletas para atletas. Pensado e projetado para te fazer um atleta de calibre elite. O impossível é só uma meta mal calculada.</p>
+      </div>
+      <div class="col-md-3 ml-auto">
+        <h3 class="text-dark">Links</h3>
+        <ul class="list-unstyled footer-links">
+          <!-- Link para ADMIN -->
+          <li sec:authorize="hasRole('ADMIN')">
+            <a href="/atleta">Acessar</a>
+          </li>
+          <!-- Link para USER -->
+          <li sec:authorize="hasRole('USER')">
+            <a href="/atividade">Acessar</a>
+          </li>
+          <!-- Link para visitantes não autenticados -->
+          <li sec:authorize="!isAuthenticated()">
+            <a href="/login">Acessar</a>
+          </li>
+
+          <li><a href="#">Sobre Nós</a></li>
+          <li><a href="#">Rotina de Treinos</a></li>
+          <li><a href="#">Funcionalidades</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h3 class="text-dark">Escreva para nós</h3>
+        <p>Seu feedback é essencial para evoluírmos a nossa plataforma e te ajudarmos a evoluir rumo a elite</p>
+        <form action="#">
+          <div class="d-flex mb-5">
+            <input type="text" class="form-control rounded-0" placeholder="Email">
+            <input type="submit" class="btn btn-primary rounded-0" value="Enviar">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row pt-5 mt-5 text-center">
+      <div class="col-md-12">
+        <div class="pt-5">
+          <p class="copyright">
+            <small>&copy;
+              <script>document.write(new Date().getFullYear());</script> Athlon. Todos os Direitos Reservados.
+            </small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

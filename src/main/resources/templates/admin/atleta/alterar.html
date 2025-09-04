@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <div th:replace="admin/fragments/heads :: heads"></div>
+  <title>Cadastro de Atletas</title>
+  <style>
+    .mensagem {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div th:replace="admin/fragments/header :: cabecalho"></div>
+
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-success alert-dismissible fade show" th:if="${mensagem}">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <span th:text="${mensagem}"></span>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>Cadastro de <b>Atletas</b></h2>
+        </div>
+        <div class="col-md-6 text-end">
+          <a th:href="@{/atleta}" class="btn btn-primary">
+            Listagem <i class="fas fa-list"></i>
+          </a>
+        </div>
+      </div>
+
+      <form th:object="${atleta}" th:action="@{/atleta/salvar}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <div class="card">
+          <div class="card-header">
+            Dados do Atleta
+          </div>
+          <div class="card_body">
+            <div class="container">
+
+              <div class="row mb-3">
+                <label class="col-form-label">Nome:</label>
+                <div>
+                  <input class="form-control" type="text" th:field="*{nome}">
+                  <span class="mensagem" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-form-label">Altura (m):</label>
+                <div>
+                  <input class="form-control" type="number" step="0.01" th:field="*{altura}">
+                  <span class="mensagem" th:if="${#fields.hasErrors('altura')}" th:errors="*{altura}"></span>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-form-label">Peso (kg):</label>
+                <div>
+                  <input class="form-control" type="number" step="0.1" th:field="*{peso}">
+                  <span class="mensagem" th:if="${#fields.hasErrors('peso')}" th:errors="*{peso}"></span>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-form-label">Sexo:</label>
+                <div>
+                  <select class="form-control" th:field="*{sexo}">
+                    <option value="">Selecione</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                    <option value="O">Outro</option>
+                  </select>
+                  <span class="mensagem" th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}"></span>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-form-label">Data de Nascimento:</label>
+                <div>
+                  <input class="form-control" type="date" th:field="*{dataNascimento}">
+                  <span class="mensagem" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-success mt-3" type="submit">Salvar <i class="fas fa-save"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <div th:replace="admin/fragments/footer :: footer"></div>
+</div>
+</body>
+</html>

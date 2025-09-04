@@ -1,0 +1,52 @@
+<header th:fragment="header" class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center">
+      <div class="site-logo"><a href="/">Athlon<span>.</span> </a></div>
+      <div class="ml-auto">
+        <nav class="site-navigation position-relative text-right" role="navigation">
+          <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+
+            <!-- Link para ADMIN -->
+            <li sec:authorize="hasRole('ADMIN')">
+              <a href="/atleta" class="nav-link">Acessar</a>
+            </li>
+
+            <!-- Link para USER -->
+            <li sec:authorize="hasRole('USER')">
+              <a href="/atividade" class="nav-link">Acessar</a>
+            </li>
+
+            <!-- Link para visitantes não autenticados -->
+            <li sec:authorize="!isAuthenticated()">
+              <a href="/login" class="nav-link">Acessar</a>
+            </li>
+
+            <!-- Links com rolagem suave -->
+            <li><a href="#missao-section" class="nav-link smoothscroll">Missão</a></li>
+            <li><a href="#sobrenos-section" class="nav-link smoothscroll">Sobre nós</a></li>
+            <li><a href="#equipe-section" class="nav-link smoothscroll">Equipe</a></li>
+            <li><a href="#faleconosco-section" class="nav-link smoothscroll">Fale Conosco</a></li>
+          </ul>
+        </nav>
+        <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle float-right">
+          <span class="icon-menu h3"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script para rolagem suave -->
+  <script>
+    document.querySelectorAll('a.smoothscroll').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetID = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetID);
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</header>

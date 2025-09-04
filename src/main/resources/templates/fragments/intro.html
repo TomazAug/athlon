@@ -1,0 +1,23 @@
+<div th:fragment="intro">
+  <a id="bgndVideo" class="player"
+     data-property="{videoURL:'https://www.youtube.com/watch?v=w-cRWOjlk8c',showYTLogo:false, showAnnotations: false, showControls: false, cc_load_policy: false, containment:'#home-section',autoPlay:true, mute:true, startAt:255, stopAt: 271, opacity:1}">
+  </a>
+
+  <div class="intro-section" id="home-section" style="background-color: #ccc;">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-12 mx-auto text-center" data-aos="fade-up">
+          <h1 class="mb-3">O impossível é só uma meta mal calculada</h1>
+          <p class="lead mx-auto desc mb-5">
+            Registre. Ajuste. Supere. Dados viram estratégia. Estratégia vira resultado. Comece agora.
+          </p>
+          <p class="text-center">
+            <a th:href="@{/atleta}" class="btn btn-outline-white py-3 px-5" sec:authorize="hasRole('ADMIN')">Acessar plataforma</a>
+            <a th:href="@{/atividade}" class="btn btn-outline-white py-3 px-5" sec:authorize="hasRole('USER')">Acessar plataforma</a>
+            <a th:href="@{/login}" class="btn btn-outline-white py-3 px-5" sec:authorize="!isAuthenticated()">Acessar plataforma</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
