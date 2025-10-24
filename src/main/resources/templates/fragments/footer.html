@@ -1,42 +1,84 @@
-<footer th:fragment="footer" id="faleconosco-section" class="footer-section" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<footer th:fragment="footer" id="faleconosco-section" class="site-footer footer-custom footer-section" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <style>
+    /* Links verdes */
+    .footer-link.link-verde {
+      color: rgb(87, 209, 49);
+      transition: color 0.3s ease;
+    }
+
+    .footer-link.link-verde:hover {
+      color: rgb(64, 102, 97);
+      text-decoration: underline;
+    }
+
+    /* Botão verde com hover */
+    .btn-verde {
+      background-color: rgb(87, 209, 49);
+      border-color: rgb(87, 209, 49);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .btn-verde:hover {
+      background-color: rgb(64, 102, 97);
+      border-color: rgb(64, 102, 97);
+      color: #fff;
+    }
+
+    /* Rolagem suave nos links do footer */
+    .footer-link.smoothscroll {
+      scroll-behavior: smooth;
+    }
+  </style>
+
   <div class="container">
     <div class="row">
+      <!-- Sobre o Athlon -->
       <div class="col-md-4">
         <h3 class="text-dark">Sobre o Athlon</h3>
         <p>De atletas para atletas. Pensado e projetado para te fazer um atleta de calibre elite. O impossível é só uma meta mal calculada.</p>
       </div>
+
+      <!-- Links -->
       <div class="col-md-3 ml-auto">
         <h3 class="text-dark">Links</h3>
         <ul class="list-unstyled footer-links">
           <!-- Link para ADMIN -->
           <li sec:authorize="hasRole('ADMIN')">
-            <a href="/atleta">Acessar</a>
-          </li>
-          <!-- Link para USER -->
-          <li sec:authorize="hasRole('USER')">
-            <a href="/atividade">Acessar</a>
-          </li>
-          <!-- Link para visitantes não autenticados -->
-          <li sec:authorize="!isAuthenticated()">
-            <a href="/login">Acessar</a>
+            <a href="/atleta" class="footer-link link-verde">Acessar</a>
           </li>
 
-          <li><a href="#">Sobre Nós</a></li>
-          <li><a href="#">Rotina de Treinos</a></li>
-          <li><a href="#">Funcionalidades</a></li>
+          <!-- Link para USER -->
+          <li sec:authorize="hasRole('USER')">
+            <a href="/atividade" class="footer-link link-verde">Acessar</a>
+          </li>
+
+          <!-- Link para visitantes não autenticados -->
+          <li sec:authorize="!isAuthenticated()">
+            <a href="/login" class="footer-link link-verde">Acessar</a>
+          </li>
+
+          <!-- Links com rolagem suave -->
+          <li><a href="#missao-section" class="footer-link link-verde smoothscroll">Missão</a></li>
+          <li><a href="#sobrenos-section" class="footer-link link-verde smoothscroll">Sobre nós</a></li>
+          <li><a href="#equipe-section" class="footer-link link-verde smoothscroll">Equipe</a></li>
         </ul>
       </div>
+
+      <!-- Escreva para nós -->
       <div class="col-md-4">
         <h3 class="text-dark">Escreva para nós</h3>
-        <p>Seu feedback é essencial para evoluírmos a nossa plataforma e te ajudarmos a evoluir rumo a elite</p>
+        <p>Seu feedback é essencial para evoluírmos a nossa plataforma e te ajudarmos a evoluir rumo à elite.</p>
         <form action="#">
           <div class="d-flex mb-5">
             <input type="text" class="form-control rounded-0" placeholder="Email">
-            <input type="submit" class="btn btn-primary rounded-0" value="Enviar">
+            <input type="submit" class="btn btn-send rounded-0 btn-verde" value="Enviar">
           </div>
         </form>
       </div>
     </div>
+
+    <!-- Copyright -->
     <div class="row pt-5 mt-5 text-center">
       <div class="col-md-12">
         <div class="pt-5">

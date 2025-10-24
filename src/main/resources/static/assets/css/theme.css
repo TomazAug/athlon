@@ -1,0 +1,215 @@
+/* =======================
+   Importa fonte Muli
+   ======================= */
+@import url('https://fonts.googleapis.com/css2?family=Muli:wght@900&display=swap');
+
+/* =======================
+   Variáveis de tema
+   ======================= */
+:root {
+    --color-background: #ffffff;
+    --color-text: #2b2b2b;
+    --color-primary: #57d131;
+    --color-card-bg: #f8f9fa;
+    --color-btn-text: #ffffff;
+    --color-link: #57d131;
+    --color-danger: #dc3545;
+    --color-toggle-icon: #2b2b2b;
+    --color-back-btn: #6c757d;
+    --color-toggle-hover: #57d131;
+}
+
+.dark-theme {
+    --color-background: #2b2b2b;
+    --color-text: #ffffff;
+    --color-primary: #57d131;
+    --color-card-bg: #3a3a3a;
+    --color-btn-text: #ffffff;
+    --color-link: #57d131;
+    --color-danger: #dc3545;
+    --color-toggle-icon: #ffffff;
+    --color-back-btn: #adb5bd;
+    --color-toggle-hover: #57d131;
+}
+
+/* =======================
+   Estilos gerais
+   ======================= */
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Links */
+a { color: var(--color-link); }
+a:hover { text-decoration: none; color: #45b128; }
+a.danger-link { color: var(--color-danger); }
+a.danger-link:hover { color: #bd2130; }
+
+/* Logo */
+.logo-text {
+    font-family: 'Muli', sans-serif;
+    font-weight: 900;
+    font-size: 1.875rem;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+}
+.logo-word { color: var(--color-text); }
+.logo-dot { color: var(--color-primary); }
+
+/* Cards */
+.card {
+    background-color: var(--color-card-bg);
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.2rem 0.5rem rgba(0,0,0,0.1);
+}
+.card-header { color: var(--color-text); }
+
+/* Botões */
+button, .btn {
+    color: var(--color-btn-text) !important;
+    background-color: var(--color-primary);
+    border: none;
+    transition: background-color 0.3s ease;
+}
+button:hover, .btn:hover {
+    background-color: #45b128;
+    color: var(--color-btn-text);
+}
+
+/* Botão voltar */
+.btn-back { background-color: var(--color-back-btn); color: var(--color-btn-text); }
+.btn-back:hover { background-color: darkgray; }
+.dark-theme .btn-back { color: #000000; }
+
+/* Botão outline */
+.btn-outline-secondary {
+    background-color: transparent;
+    color: var(--color-btn-text);
+    border-color: var(--color-btn-text);
+}
+.btn-outline-secondary:hover {
+    background-color: var(--color-btn-text);
+    color: var(--color-background);
+}
+
+/* Botão Apagar */
+.btn-outline-danger {
+    background-color: var(--color-danger);
+    color: #ffffff !important;
+    border-color: var(--color-danger);
+}
+.btn-outline-danger:hover {
+    background-color: #bd2130;
+    color: #ffffff !important;
+    border-color: #bd2130;
+}
+
+/* Ícone de alternar tema */
+#toggle-theme i {
+    color: var(--color-toggle-icon);
+    transition: color 0.3s ease;
+}
+#toggle-theme:hover i {
+    color: var(--color-toggle-hover);
+}
+
+/* Campos de formulário */
+input, textarea, select {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    border: 1px solid #ccc;
+}
+.dark-theme input, .dark-theme textarea { color: #000000; }
+
+/* Labels */
+label.col-form-label, .login-label { color: var(--color-text); }
+.dark-theme label.col-form-label, .dark-theme .login-label { color: #ffffff; }
+
+/* Placeholder */
+input::placeholder, textarea::placeholder { color: #999; }
+
+/* Header / Footer */
+header { background-color: transparent; margin-bottom: 0 !important; padding-bottom: 0 !important; }
+footer { background-color: transparent; }
+header .btn, footer .btn { color: var(--color-btn-text); }
+header a.nav-link, footer a.nav-link { color: var(--color-primary) !important; }
+header a.nav-link:hover, footer a.nav-link:hover { color: #45b128 !important; }
+
+/* Correção do espaço acima do H2 */
+.container > .row:first-child, .container .row.no-margin {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+}
+.container h2 {
+    margin-top: 0 !important;
+    margin-bottom: 0.5rem;
+}
+
+/* =======================
+   Barra de pesquisa e ações
+   ======================= */
+.form-actions {
+    display: flex;
+    gap: 0.5rem; /* espaçamento padrão entre todos os itens */
+    align-items: center;
+}
+
+/* Campos da pesquisa */
+form.d-flex.gap-0 input.form-control-sm,
+form.d-flex.gap-0 select.form-control-sm {
+    height: 2rem;
+    flex: 0 0 11rem; /* largura levemente aumentada */
+}
+
+/* Botão Buscar */
+form.d-flex.gap-0 button.btn-sm {
+    height: 2rem;
+    min-width: 5rem;
+}
+
+/* Botão Cadastrar */
+.form-actions .btn-success {
+    height: 2rem; /* mesma altura do botão Buscar */
+}
+
+/* =======================
+   Layout dos formulários em colunas
+   ======================= */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+    min-width: 180px;
+}
+
+.form-row .form-group.small {
+    max-width: 200px;
+}
+
+#toggle-theme:hover {
+    background-color: #2b2b2b; /* fundo escuro */
+    border-color: #2b2b2b;     /* opcional, deixa a borda uniforme */
+}
+
+#toggle-theme:hover i {
+    color: var(--color-primary); /* ícone verde */
+}
+
+.dark-theme #toggle-theme:hover {
+    background-color: #f8f9fa; /* fundo claro */
+    border-color: #f8f9fa;     /* opcional, deixa a borda uniforme */
+}
+
+.dark-theme #toggle-theme:hover i {
+    color: var(--color-primary); /* ícone verde */
+}

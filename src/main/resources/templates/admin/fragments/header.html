@@ -1,19 +1,38 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<body>
-<header th:fragment="cabecalho" class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-    <a href="http://localhost" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-        <img th:src="@{/assets/images/logo.png}" alt="Logo" height="20" />
-        <!--        <span class="fs-4" style="margin-left: 5px;">ATHLON</span>-->
+<header th:fragment="header" class="d-flex align-items-center justify-content-between border-bottom py-3 mb-4"
+        xmlns:sec="http://www.w3.org/1999/xhtml">
+
+    <!-- Logo -->
+    <a href="/" class="d-flex align-items-center text-decoration-none">
+        <span class="logo-text"><span class="logo-word">ATHLON</span><span class="logo-dot">.</span></span>
     </a>
 
-    <ul class="nav nav-pills">
-        <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a th:href="@{/atleta/form-inserir}" class="nav-link">Cadastrar Atletas</a></li>
-        <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a th:href="@{/atleta}" class="nav-link">Listagem de Atletas</a></li>
-        <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"><a th:href="@{/atividade/form-inserir}" class="nav-link">Cadastrar Atividade</a></li>
-        <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"><a th:href="@{/atividade}" class="nav-link">Listagem de Atividades</a></li>
+    <!-- Links -->
+    <ul class="nav gap-3 align-items-center ms-auto me-3">
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/atleta/form-inserir}" class="nav-link p-0">Cadastrar Atletas</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/atleta}" class="nav-link p-0">Listagem de Atletas</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('USER') and !hasRole('ADMIN')">
+            <a th:href="@{/atividade/form-inserir}" class="nav-link p-0">Cadastrar Atividade</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAnyRole('USER','ADMIN')">
+            <a th:href="@{/atividade}" class="nav-link p-0">Listagem de Atividades</a>
+        </li>
     </ul>
+
+    <!-- Botões -->
+    <div class="d-flex gap-2">
+        <!-- Botão de alternar tema -->
+        <button id="toggle-theme" class="btn btn-outline-secondary btn-sm"></button>
+
+        <button type="button" class="btn btn-back btn-sm" onclick="history.back()">Voltar</button>
+
+        <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
+            <button type="submit" class="btn btn-outline-danger btn-sm"
+                    th:data-confirm-sair="|Você realmente deseja sair?|"
+                    onclick="if (!confirm(this.getAttribute('data-confirm-sair'))) return false">Sair</button>
+        </form>
+    </div>
 </header>
-</body>
-</html>

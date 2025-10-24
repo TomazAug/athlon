@@ -1,26 +1,44 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<body>
-<footer th:fragment="footer" class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-    <p class="col-md-4 mb-0 text-muted">©2025 Athlon</p>
+<footer th:fragment="footer" class="border-top py-3 mt-4" xmlns:sec="http://www.w3.org/1999/xhtml">
 
-    <a href="http://localhost" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-        <img th:src="@{/assets/images/logo.png}" alt="Logo" width="150" />
-    </a>
+    <!-- Primeira linha: logo, links e botões -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
 
-    <ul class="nav col-md-4 justify-content-end">
-            <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a th:href="@{/atleta/form-inserir}" class="nav-link">Cadastrar Atletas</a></li>
-            <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a th:href="@{/atleta}" class="nav-link">Listagem de Atletas</a></li>
-            <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"><a th:href="@{/atividade/form-inserir}" class="nav-link">Cadastrar Atividade</a></li>
-            <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"><a th:href="@{/atividade}" class="nav-link">Listagem de Atividades</a></li>
-    </ul>
+        <!-- Logo à esquerda -->
+        <a href="/" class="d-flex align-items-center text-decoration-none">
+            <span class="logo-text"><span class="logo-word">ATHLON</span><span class="logo-dot">.</span></span>
+        </a>
 
-    <div sec:authorize="isAuthenticated()">
-        <p>Usuário: <span sec:authentication="principal.username"></span></p>
-        <p>Roles: <span sec:authentication="principal.authorities"></span></p>
+        <!-- Links no centro -->
+        <ul class="nav gap-3">
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/atleta/form-inserir}" class="nav-link p-0">Cadastrar Atletas</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/atleta}" class="nav-link p-0">Listagem de Atletas</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('USER') and !hasRole('ADMIN')">
+                <a th:href="@{/atividade/form-inserir}" class="nav-link p-0">Cadastrar Atividade</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('USER','ADMIN')">
+                <a th:href="@{/atividade}" class="nav-link p-0">Listagem de Atividades</a>
+            </li>
+        </ul>
+
+        <!-- Botões à direita -->
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-back btn-sm" onclick="history.back()">Voltar</button>
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
+                <button type="submit" class="btn btn-outline-danger btn-sm"
+                        th:data-confirm-sair="|Você realmente deseja sair?|"
+                        onclick="if (!confirm(this.getAttribute('data-confirm-sair'))) return false">Sair</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Segunda linha: user/roles à esquerda -->
+    <div class="mt-2" sec:authorize="isAuthenticated()">
+        <small class="me-3">Usuário: <span sec:authentication="principal.username"></span></small>
+        <small>Roles: <span sec:authentication="principal.authorities"></span></small>
     </div>
 
 </footer>
-</body>
-</html>

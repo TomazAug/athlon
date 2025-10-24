@@ -44,43 +44,44 @@ public class AtividadeController {
                 .orElseThrow(() -> new IllegalArgumentException("Atleta não encontrado"));
     }
 
-    // Listagem: admin vê lista vazia, user vê suas atividades
+    // LISTAGEM
     @GetMapping
     public String listagem(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        List<Atividade> atividades;
 
         if (isAdmin(auth)) {
-            // Admin vê lista vazia (ou todas atividades, se preferir)
-            model.addAttribute("atividades", List.of());
+            atividades = atividadeRepository.findAll();
         } else if (isUser(auth)) {
             Atleta atleta = getAtletaDoUsuarioLogado(auth);
-            List<Atividade> atividades = atividadeRepository.findByAtleta(atleta);
-            model.addAttribute("atividades", atividades);
+            atividades = atividadeRepository.findByAtleta(atleta);
         } else {
             throw new AccessDeniedException("Acesso negado");
         }
 
+        // Flag para controlar botões na view
+        String username = auth.getName();
+        atividades.forEach(a -> a.setPodeEditar(isAdmin(auth) || a.getAtleta().getUser().getUsername().equals(username)));
+
+        model.addAttribute("atividades", atividades);
         return "admin/atividade/listagem";
     }
 
-    // Formulário para inserir - só USER pode acessar
+    // FORMULÁRIO DE INSERÇÃO (USER)
     @GetMapping("/form-inserir")
     public String formInserir(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         if (!isUser(auth)) {
             return "redirect:/atividade?mensagem=Somente atletas podem inserir atividades";
         }
-
         model.addAttribute("atividade", new Atividade());
         return "admin/atividade/inserir";
     }
 
-    // Salvar atividade - só USER pode salvar
+    // SALVAR (USER)
     @PostMapping("/salvar")
     public String salvar(@Valid Atividade atividade, BindingResult result, RedirectAttributes attributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         if (!isUser(auth)) {
             attributes.addFlashAttribute("mensagem", "Somente atletas podem salvar atividades");
             return "redirect:/atividade";
@@ -94,7 +95,6 @@ public class AtividadeController {
         }
 
         Atleta atleta = getAtletaDoUsuarioLogado(auth);
-
         atividade.setAtleta(atleta);
         atividade.setDataHora(LocalDateTime.now());
 
@@ -103,78 +103,68 @@ public class AtividadeController {
         return "redirect:/atividade";
     }
 
-    // Excluir atividade - só USER dono pode excluir
+    // EXCLUIR
     @GetMapping("/excluir/{id}")
     public String excluir(@PathVariable("id") Long id, RedirectAttributes attributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (!isUser(auth)) {
-            attributes.addFlashAttribute("mensagem", "Somente atletas podem excluir atividades");
-            return "redirect:/atividade";
-        }
-
         Atividade atividade = atividadeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID inválido"));
 
-        Atleta atleta = getAtletaDoUsuarioLogado(auth);
-
-        if (!atividade.getAtleta().equals(atleta)) {
-            attributes.addFlashAttribute("mensagem", "Você não pode excluir uma atividade que não é sua!");
+        if (isAdmin(auth) || (isUser(auth) && atividade.getAtleta().getUser().getUsername().equals(auth.getName()))) {
+            atividadeRepository.delete(atividade);
+            attributes.addFlashAttribute("mensagem", "Atividade excluída com sucesso!");
             return "redirect:/atividade";
         }
 
-        atividadeRepository.delete(atividade);
-        attributes.addFlashAttribute("mensagem", "Atividade excluída com sucesso!");
+        attributes.addFlashAttribute("mensagem", "Você não tem permissão para excluir esta atividade");
         return "redirect:/atividade";
     }
 
-    // Alterar atividade - só USER dono pode alterar
+    // ALTERAR
     @GetMapping("/alterar/{id}")
     public String alterar(@PathVariable("id") Long id, Model model, RedirectAttributes attributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (!isUser(auth)) {
-            attributes.addFlashAttribute("mensagem", "Somente atletas podem alterar atividades");
-            return "redirect:/atividade";
-        }
-
         Atividade atividade = atividadeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID inválido"));
 
-        Atleta atleta = getAtletaDoUsuarioLogado(auth);
-
-        if (!atividade.getAtleta().equals(atleta)) {
-            attributes.addFlashAttribute("mensagem", "Você não pode alterar uma atividade que não é sua!");
-            return "redirect:/atividade";
+        if (isAdmin(auth) || (isUser(auth) && atividade.getAtleta().getUser().getUsername().equals(auth.getName()))) {
+            model.addAttribute("atividade", atividade);
+            return "admin/atividade/alterar";
         }
 
-        model.addAttribute("atividade", atividade);
-        return "admin/atividade/alterar";
+        attributes.addFlashAttribute("mensagem", "Você não tem permissão para alterar esta atividade");
+        return "redirect:/atividade";
     }
 
-    // Buscar por modalidade - admin vê lista vazia, user filtra as próprias
+    // BUSCAR POR MODALIDADE
     @PostMapping("/buscar")
     public String buscarPorModalidade(@RequestParam("modalidade") String modalidade, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        List<Atividade> atividades;
 
         if (isAdmin(auth)) {
-            // Admin vê lista vazia ou todas (escolha a que preferir)
-            model.addAttribute("atividades", List.of());
+            if (modalidade == null || modalidade.trim().isEmpty()) {
+                atividades = atividadeRepository.findAll();
+            } else {
+                atividades = atividadeRepository.findByModalidadeContainingIgnoreCase(modalidade);
+            }
         } else if (isUser(auth)) {
             Atleta atleta = getAtletaDoUsuarioLogado(auth);
-
-            List<Atividade> atividades;
             if (modalidade == null || modalidade.trim().isEmpty()) {
                 atividades = atividadeRepository.findByAtleta(atleta);
             } else {
                 atividades = atividadeRepository.findByModalidadeContainingIgnoreCase(modalidade);
                 atividades.removeIf(a -> !a.getAtleta().equals(atleta));
             }
-            model.addAttribute("atividades", atividades);
         } else {
             throw new AccessDeniedException("Acesso negado");
         }
 
+        // Define a flag para a view
+        String username = auth.getName();
+        atividades.forEach(a -> a.setPodeEditar(isAdmin(auth) || a.getAtleta().getUser().getUsername().equals(username)));
+
+        model.addAttribute("atividades", atividades);
         return "admin/atividade/listagem";
     }
 }

@@ -2,10 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="admin/fragments/heads :: heads"></div>
-    <title>Login</title>
+    <title>Athlon | Login</title>
     <style>
-        .mensagem {
-            color: red;
+        .mensagem { color: red; }
+
+        .info-cadastro {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--color-text); /* branco no tema escuro, preto no claro */
+        }
+        .info-cadastro a {
+            text-decoration: none;
+            font-weight: bold;
+            color: var(--color-primary); /* verde padrão do site */
+        }
+        .info-cadastro a:hover {
+            color: #45b128; /* verde mais escuro ao passar o mouse */
         }
     </style>
 </head>
@@ -13,17 +25,14 @@
 <div class="container">
     <div th:replace="admin/fragments/header :: header"></div>
 
-    <br><br><br>
-
     <div class="row">
         <div class="col">
-            <!-- Exibir mensagem de erro se houver -->
+            <!-- Mensagens -->
             <div class="alert alert-danger alert-dismissible fade show" th:if="${param.error}">
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 Usuário ou senha inválidos.
             </div>
 
-            <!-- Exibir mensagem de logout -->
             <div class="alert alert-success alert-dismissible fade show" th:if="${param.logout}">
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 Logout realizado com sucesso.
@@ -31,35 +40,35 @@
 
             <div class="row mb-3">
                 <div class="col-sm-6">
-                    <h2>Entrar no <b>Athlon</b></h2>
-                </div>
-                <div class="col-md-6 text-end">
-                    <a th:href="@{/atleta/form-inserir}" class="btn btn-primary">
-                        Cadastrar-se <i class="fas fa-user-plus"></i>
-                    </a>
+                    <h2>Entrar no <b class="logo-text"><span class="logo-word">ATHLON</span><span class="logo-dot">.</span></b></h2>
                 </div>
             </div>
 
             <form th:action="@{/login}" method="post">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header login-header">
                         Dados de Acesso
                     </div>
                     <div class="card-body">
                         <div class="container">
 
                             <div class="row mb-3">
-                                <label class="col-form-label">Usuário:</label>
+                                <label class="col-form-label login-label">Usuário:</label>
                                 <div>
-                                    <input class="form-control" type="text" name="username" required>
+                                    <input class="form-control login-input" type="text" name="username" required>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <label class="col-form-label">Senha:</label>
+                                <label class="col-form-label login-label">Senha:</label>
                                 <div>
-                                    <input class="form-control" type="password" name="password" required>
+                                    <input class="form-control login-input" type="password" name="password" required>
                                 </div>
+                            </div>
+
+                            <!-- Mensagem para quem não tem cadastro -->
+                            <div class="info-cadastro">
+                                Ainda não tem cadastro? <a th:href="@{/atleta/form-inserir}">Clique aqui para se cadastrar.</a>
                             </div>
 
                         </div>
@@ -69,6 +78,7 @@
                 <button class="btn btn-success mt-3" type="submit">
                     Entrar <i class="fas fa-sign-in-alt"></i>
                 </button>
+
             </form>
         </div>
     </div>

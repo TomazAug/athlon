@@ -13,10 +13,23 @@ public class LoginController {
     public String login() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        // Se usuário estiver autenticado e não for "anonymousUser", redireciona
-        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-            return "redirect:/atleta";
+        // Se usuário já estiver logado
+            String currentUri = org.springframework.web.context.request.RequestContextHolder.getRequestAttributes() instanceof org.springframework.web.context.request.ServletRequestAttributes
+                    ? ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.getRequestAttributes()).getRequest().getRequestURI()
+                    : "";
+            if ("/atleta/form-inserir".equals(currentUri)) {
+                return "/atleta/form-inserir";
+            } else if ("/atleta/salvar".equals(currentUri)) {
+                return "/atleta/salvar";
+            }
+            if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
+                boolean isAdmin = auth.getAuthorities().stream()
+                        .anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
+                if (isAdmin) {
+                    return "redirect:/atleta";
+                }
+                return "redirect:/atividade";
+            }
+            return "login";
         }
-        return "login"; // mostra a página de login caso não esteja autenticado
-    }
 }

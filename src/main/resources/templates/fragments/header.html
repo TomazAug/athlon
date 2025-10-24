@@ -1,5 +1,10 @@
 <header th:fragment="header" class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner"
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <style>
+    section {
+      scroll-margin-top: 80px; /* altura do header (40px + um pouco de sobra) */
+    }
+  </style>
   <div class="container-fluid">
     <div class="d-flex align-items-center">
       <div class="site-logo"><a href="/">Athlon<span>.</span> </a></div>
@@ -36,17 +41,4 @@
     </div>
   </div>
 
-  <!-- Script para rolagem suave -->
-  <script>
-    document.querySelectorAll('a.smoothscroll').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const targetID = this.getAttribute('href').substring(1);
-        const targetSection = document.getElementById(targetID);
-        if (targetSection) {
-          targetSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-  </script>
 </header>
